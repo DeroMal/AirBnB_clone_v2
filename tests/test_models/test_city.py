@@ -2,12 +2,10 @@
 """test for city"""
 import unittest
 import os
+from os import getenv
 from models.city import City
-from models.state import State
 from models.base_model import BaseModel
 import pep8
-from sqlalchemy import Column
-from os import getenv
 
 
 class TestCity(unittest.TestCase):
@@ -18,9 +16,7 @@ class TestCity(unittest.TestCase):
         """set up for test"""
         cls.city = City()
         cls.city.name = "LA"
-        cls.state = State()
-        cls.state.name = "CA"
-        cls.city.state_id = cls.state.id
+        cls.city.state_id = "CA"
 
     @classmethod
     def teardown(cls):
@@ -61,29 +57,15 @@ class TestCity(unittest.TestCase):
         self.assertEqual(type(self.city.name), str)
         self.assertEqual(type(self.city.state_id), str)
 
-    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == "db",
-                     "can't run if storage is db")
+    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") == 'db', 'DB')
     def test_save_City(self):
         """test if the save works"""
-        city = City()
-        city.name = 'LA'
-        state = State()
-        state.name = 'CA'
-        city.state_id = state.id
-        city.save()
-        self.assertNotEqual(city.created_at, city.updated_at)
+        self.city.save()
+        self.assertNotEqual(self.city.created_at, self.city.updated_at)
 
     def test_to_dict_City(self):
         """test if dictionary works"""
         self.assertEqual('to_dict' in dir(self.city), True)
-
-#    @unittest.skipIf(getenv("HBNB_TYPE_STORAGE") != "db",
-#    "can't run if storage is file")
-#    def test_attributes_v2_City(self):
-#        """Test the attributes in v2"""
-#        self.assertTrue(self.city.__tablename__ == "cities")
-#        self.assertTrue(type(self.city.name) == Column)
-#        self.assertTrue(type(self.city.state_id) == Column)
 
 
 if __name__ == "__main__":

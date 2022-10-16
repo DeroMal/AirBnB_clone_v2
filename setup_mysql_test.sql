@@ -1,14 +1,9 @@
--- prepares a MySQL server for the AirBnB clone
--- create a user
-CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost' IDENTIFIED BY 'hbnb_test_pwd';
-
--- create a database
+-- Creating hbnb_test_db database
+-- Privileges for new user (hbnb_test)
 CREATE DATABASE IF NOT EXISTS hbnb_test_db;
-
--- create a user and grant privileges
-GRANT ALL PRIVILEGES ON hbnb_test_db.*
-TO 'hbnb_test'@'localhost';
-
--- grant SELECT privileges on performance_schema
-GRANT SELECT ON performance_schema.*
-TO 'hbnb_test'@'localhost';
+CREATE USER IF NOT EXISTS 'hbnb_test'@'localhost';
+SET PASSWORD FOR 'hbnb_test'@'localhost' = 'hbnb_test_pwd';
+USE hbnb_test_db;
+GRANT ALL PRIVILEGES ON hbnb_test_db.* TO 'hbnb_test'@'localhost';
+GRANT SELECT ON performance_schema.* TO 'hbnb_test'@'localhost';
+FLUSH PRIVILEGES;

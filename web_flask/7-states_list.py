@@ -1,26 +1,27 @@
 #!/usr/bin/python3
-"""Starts a Flask web application"""
-
+""" Script that runs an app with Flask framework """
+from flask import Flask, render_template
 from models import storage
 from models.state import State
-from flask import Flask
-from flask import render_template
+
+
 app = Flask(__name__)
 
 
-@app.route('/states_list', strict_slashes=False)
-def states():
-    """Returns a rendered html template
-    at the /states_list route,
-    listing all states"""
-    return render_template('7-states_list.html',
-                           states=storage.all('State').values())
-
-
 @app.teardown_appcontext
-def teardown(self):
-    """Removes the current SQLAlchemy Session"""
+def teardown_session(exception):
+    """ Teardown """
     storage.close()
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+
+@app.route('/states_list', strict_slashes=False)
+def display_html():
+    """ Function called with /states_list route """
+    states = storage.all(State)
+    dict_to_html = {value.id: value.name for value in states.values()}
+    return render_template('7-states_list.html',
+                           Table="States",
+                           items=dict_to_html)
+
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)

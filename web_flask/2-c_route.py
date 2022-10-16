@@ -1,29 +1,27 @@
 #!/usr/bin/python3
-"""Starts a Flask web application"""
-
+""" Script that runs an app with Flask framework """
 from flask import Flask
+
+
 app = Flask(__name__)
 
 
 @app.route('/', strict_slashes=False)
-def hello_holberton():
-    """Returns a string at the root route"""
+def hello_hbnb():
+    """ Function called with / route """
     return 'Hello HBNB!'
 
 
 @app.route('/hbnb', strict_slashes=False)
 def hbnb():
-    """Returns a string at the /hbnb route"""
+    """ Function called with /hbnb route """
     return 'HBNB'
 
 
 @app.route('/c/<text>', strict_slashes=False)
-def cisfun(text):
-    """Returns a string at the /c/<text> route,
-    expands the <text> variable"""
-    new = text.replace('_', ' ')
-    return 'C %s' % new
+def c_text(text):
+    """ Function called with /c/<text> route """
+    return 'C %s' % text.replace('_', ' ')
 
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0')
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5000)
